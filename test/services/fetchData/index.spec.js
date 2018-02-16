@@ -1,53 +1,63 @@
 import { expect } from 'code'
 import sinon from 'sinon'
-import fetch from 'isomorphic-fetch'
-import fetchData from '../../../src/services/fetchData'
+import { fetchData } from '../../../src/services/fetchData'
+import 'isomorphic-fetch'
 
-describe('Given the `fetchData` service', function() {
-    describe('when it is called', function() {
-        let requests
-        let mockUrl
-        let fetchSpy
-        let systemUnderTest
-        
-        beforeEach(function() {
-            this.server = sinon.createFakeServer()
-            mockUrl = 'http://localhost/my/mock/url.json'
-            this.server.respondWith(
-                'GET', 
-                mockUrl,
-                [ 200,
-                  {'Content-Type' : 'application/json' },
-                  '[{ "foo" : "bar" }]'
-                ]
-            )
-            fetchSpy = sinon.spy(fetch)
-            systemUnderTest = fetchData(mockUrl)
-            this.server.respond()
+describe('Given the `fetchData` service', () => {
+    describe('when getting data', () => {
+        let validEndpoint
+        let invalidEndpoint
+        let sandbox
+        let fetchStub
+        let expectedError
+        let expectedResult
+
+        beforeEach(() => {
+            sandbox = sinon.createSandbox()
+            validEndpoint = 'http://localhost:8080/pizza.json'
+            invalidEndpoint = '!@#$'
+            expectedError = new Error("Ain't gonna happen")
+            expectedResult = {foo:'bar'}
+            fetchStub = sinon.stub(global, 'fetch')
         })
 
-        afterEach(function() {
-           fetchSpy.reset()
-           this.server.restore()
+        afterEach(() => {
+            global.fetch.restore()
+            sandbox.restore()
+        })
+        describe('and having a valid endpoint', () => {
+            xit('should return expected data when calling `fetch`', () => {
+                fetchStub.resolves(expectedResult)
+
+                fetchData(validEndpoint)
+                    .then((value) => {
+                        expect(value).to.equal(expectedResult)
+                        sinon.assert.calledOnce(fetchStub)
+                        sinon.assert.calledWithExactly(fetchStub, validEndpoint)
+                    })
+                    .catch(e => {
+                        sinon.assert.fail('this should not be caught')
+                    })
+                
+            })
+        })
+        describe('and having an invalid endpoint', () => {
+            xit('should catch an error when calling `fetch`', () => {
+                fetchStub.rejects(expectedError)
+                
+                fetchData(invalidEndpoint)
+                .then((success) => {
+                    sinon.assert.fail('`fetchData` mistakenly sent back a successful response')
+                })
+                .catch((error) => {
+                    expect(error).to.equal(expectedError)
+                    sinon.assert.calledOnce(fetchStub)
+                    sinon.assert.calledWithExactly(fetchStub, invalidEndpoint)
+                })
+                
+            })
         })
 
-        it('subsequently calls the `isomorphic-fetch` function with the supplied URL', function() {
-            expect(
-                fetchSpy.calledOnce && 
-                fetchSpy.calledWithExactly(mockUrl)
-            ).to.be.true()
-        })
-
-        xit('immediately returns a Promise', () => {
-            expect(systemUnderTest).to.be.an.instanceof(Promise)
-        })
     })
-    describe('when it receives a successful response from the server', () => {
-        it('fulfills the promise')
-        it('does not throw an error')
-    })
-    describe('when it receives an error response from the server', () => {
-        it('rejects the promise')
-        it('throws an error')
-    })
+    
 })
