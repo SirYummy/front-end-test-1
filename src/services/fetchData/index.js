@@ -1,10 +1,5 @@
-import 'isomorphic-fetch'
+import fetch from 'isomorphic-fetch'
 
-export const fetchData = (endpoint) => { 
-    
+export default (endpoint) => {
     return fetch(endpoint)
-        .then(response => response)
-        .then(data => data)
-        .catch((error) => error)
-        
 }
