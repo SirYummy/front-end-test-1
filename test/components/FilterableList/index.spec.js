@@ -16,9 +16,24 @@ describe('Given the `FilterableList` component',() => {
             childListComponent = component.find('ul')
         })
 
+        it('should exist', () => {
+            expect(component.exists()).to.be.true()
+        })
+
+        it('has a state', () => {
+            expect(component.state()).to.exist()
+        })
+
         it('should have an `applyFilter` method that should correctly update `filteredItems` in state', () => {
             let testFilter = `fo`
             expectedFilteredItems = ['foo']
+            component.instance().applyFilter(testFilter)
+            expect(component.state().filteredItems).to.equal(expectedFilteredItems)
+        })
+
+        it('should not update `filteredItems in state if the filterValue does not meet the specified criteria', () => {
+            let testFilter = ``
+            expectedFilteredItems = expectedItems
             component.instance().applyFilter(testFilter)
             expect(component.state().filteredItems).to.equal(expectedFilteredItems)
         })

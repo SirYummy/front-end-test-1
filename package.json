@@ -10,7 +10,7 @@
     "start": "webpack-dev-server",
     "build": "webpack",
     "test": "mocha test --watch",
-    "test:coverage" : "nyc --reporter=text mocha --watch"
+    "test:coverage" : "nyc --reporter=text mocha"
   },
   "author": "John Deere",
   "license": "Copyright © 2017 Deere & Company",

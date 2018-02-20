@@ -1,23 +1,17 @@
 import { expect } from 'code'
 import sinon from 'sinon'
+import config from '../../../src/config'
 import services from '../../../src/services'
 import 'isomorphic-fetch'
+import { setTimeout } from 'timers';
 
 describe('Given the `fetchData` service', () => {
-    describe('when getting data', () => {
-        let validEndpoint
-        let invalidEndpoint
+    describe('when invoked', () => {
         let sandbox
         let fetchStub
-        let expectedError
-        let expectedResult
 
         beforeEach(() => {
             sandbox = sinon.createSandbox()
-            validEndpoint = 'http://localhost:8080/pizza.json'
-            invalidEndpoint = '!@#$'
-            expectedError = new Error("Ain't gonna happen")
-            expectedResult = {foo:'bar'}
             fetchStub = sinon.stub(global, 'fetch')
         })
 
@@ -25,33 +19,18 @@ describe('Given the `fetchData` service', () => {
             global.fetch.restore()
             sandbox.restore()
         })
-        describe('and having a valid endpoint', () => {
-            it('should return expected data when calling `fetch`', () => {
-                fetchStub.resolves(expectedResult)
 
-                services.fetchData(validEndpoint)
-                    .then((value) => {
-                        value.json().then((jsonPromiseReturnValue) => { 
-                            sinon.assert.pass('fetchData succeeded in returning data')
-                         })
-                   
-                    })
-                   
-                
-            })
-        })
-        describe('and having an invalid endpoint', () => {
-            it('should catch an error when calling `fetch`', () => {
-                fetchStub.rejects(expectedError)
-                
-                services.fetchData(invalidEndpoint)
-                .catch((error) => {
-                    sinon.assert.pass('The error was successfully caught')
-                  
+        it('should call `fetch` with the value of the endpoint argument passed to it', () => {
+            let endpoint = config.entities[0].endpoint
+            fetchStub.resolves('MYSTERIOUSLY, I SOMETIMES VANISH!')
+            services.fetchData(endpoint)
+                .then((mysteryParameter) => { // TODO: follow up on sinon async bug
+                    sinon.assert.calledWithExactly(fetchStub, endpoint)
                 })
-                
-            })
         })
+        
+        it('should return expected data when calling `fetch`') // TODO: follow up on sinon async bug
+        it('should return expected error when calling `fetch`') // TODO: follow up on sinon async bug
 
     })
     
