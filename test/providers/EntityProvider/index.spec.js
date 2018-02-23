@@ -3,9 +3,9 @@ import { expect } from 'code'
 import sinon from 'sinon'
 import { shallow } from 'enzyme'
 import services from '../../../src/services'
-import EntityProvider from '../../../src/providers/EntityProvider'
+import { EntityProvider, EntityConsumer } from '../../../src/providers/EntityProvider'
 
-describe('Given the `EntityProvider`', () => {
+describe('Given the `EntityProvider` and `EntityConsumer`', () => {
     let component
     let sandbox
     let fakeData
@@ -15,7 +15,13 @@ describe('Given the `EntityProvider`', () => {
         sandbox = sinon.createSandbox()
         fakeData = ['foo', 'bar', 'baz']
         fetchDataStub = sandbox.stub(services, 'fetchData').resolves(fakeData)
-        component = shallow(<EntityProvider><div>test div</div></EntityProvider>)
+        component = shallow(
+            <EntityProvider>
+                <EntityConsumer>
+                    {entityState => <div entities={entityState.entities}></div>}
+                </EntityConsumer>
+            </EntityProvider>
+        )
     })
 
     afterEach(() => {
@@ -36,14 +42,6 @@ describe('Given the `EntityProvider`', () => {
             expect(component.state()).to.exist()
         })
 
-        it('exposes entities in context', () => {
-            expect(component.instance().getChildContext().entities)
-            .to.equal(component.state().entities)
-        })
-
-        it('renders its children', () => {
-            expect(component.find('div').length).to.equal(1)
-        })
     })
    
 })

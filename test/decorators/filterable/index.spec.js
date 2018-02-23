@@ -1,31 +1,46 @@
 import { expect } from 'code'
-import React from 'react'
+import React, { Component } from 'react'
 import { shallow } from 'enzyme'
-import filterable from '../../../src/decorators/filterable'
+import decorators from '../../../src/decorators'
 
-const TestComponent = (props = {isDecorated : false, data : []}) => {
-    return ( <div>This component {props.isDecorated ? 'is' : 'isn\'t'} decorated!</div>)
+class TestComponent extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            isDecorated : false
+        } 
+    }
+    render() {
+        return ( <div>This component {this.props.isDecorated ? 'is' : 'isn\'t'} decorated!</div>)
+    }
+}
+
+TestComponent.defaultProps = {
+    isDecorated : false
 }
 
 describe('Given the `filterable` decorator', () => {
     describe('when decorating a component that has a `data` prop', () => {
         let decoratedComponent
         let expectedData
+        let hoc
         beforeEach(() => {
-            decoratedComponent = shallow(filterable(<TestComponent />))
+            hoc = decorators.filterable(TestComponent)
+            decoratedComponent = shallow(<hoc />)
         })
+
+        afterEach(() => {
+            
+        })
+
         it('changes the value of `props.isDecorated` to `true`', () => {
 
         })
     })
 })
 
-import { shallow } from 'enzyme'
-import { expect } from 'code'
-import React from 'react'
-import FilterableList from '../../../src/components/FilterableList'
-
-describe('Given the `FilterableList` component',() => {
+/*
+xdescribe('Given the `FilterableList` component',() => {
     describe('when it is passed in items via props as an array of strings', () => {
         let expectedItems
         let expectedFilteredItems
@@ -66,3 +81,4 @@ describe('Given the `FilterableList` component',() => {
 
     })
 })
+*/

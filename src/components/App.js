@@ -1,13 +1,17 @@
 import React, { Component } from 'react'
-import EntityProvider from '../providers/EntityProvider'
+import { EntityProvider, EntityConsumer } from '../providers/EntityProvider'
 import EntityContainer from '../containers/EntityContainer'
 
 class App extends Component {
  render(){
    return (
+   
      <EntityProvider>
-       <EntityContainer />
+       <EntityConsumer>
+        {entityState => <EntityContainer  entityState={entityState} />}
+      </EntityConsumer>
      </EntityProvider>
+    
    )
   }
 }

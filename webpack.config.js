@@ -9,7 +9,8 @@ const config = {
   entry: filePath,
   output: {
     filename: 'bundle.js',
-    path: path.join(__dirname, 'dist')
+    path: path.join(__dirname, 'dist'),
+    sourceMapFilename : '[file].map'
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -26,7 +27,8 @@ const config = {
     compress: true,
     open: true,
     port: PORT
-  }
+  },
+  devtool: 'cheap-module-source-map'
 }
 
 module.exports = config;

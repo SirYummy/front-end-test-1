@@ -6,9 +6,11 @@ import EntityContainer from '../../../src/containers/EntityContainer'
 
 describe('Given the `EntityContainer`', () => {
     let component
+    let props
         
     beforeEach(() => {
-        component = shallow(<EntityContainer />)
+        props = { entityState : { entities : ['foo', 'bar', 'baz'] } }
+        component = shallow(<EntityContainer {...props} />)
     })
 
     describe('when it mounts', () => {
@@ -31,9 +33,9 @@ describe('Given the `EntityContainer`', () => {
             expect(component.state().filterInputValue).to.be.a.string()
         })
 
-        it('renders a `FilterInput` and a `FilterableList`', () => {
+        it('renders a `FilterInput` and a `filterable(List)`', () => {
             expect(component.find('FilterInput').length).to.equal(1)
-            expect(component.find('FilterableList').length).to.equal(1)
+            expect(component.find('filterable(List)').length).to.equal(1)
         })
     })
     describe('when handleFilterInputChange is called', () => {

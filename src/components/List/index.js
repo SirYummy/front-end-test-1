@@ -1,13 +1,21 @@
-import React from 'react'
+import React, { Component } from 'react'
 
 const renderListItems = (items) => {
     return items.map((item, index) => <li key={index}>{item}</li>)
 }
 
-export default (props = {items : []}) => {
-    return (
-        <ul>
-            {renderListItems(props.items)}
-        </ul>
-    )
+class List extends Component {
+    constructor(props) {
+        super(props)
+    }
+
+    render() {
+        return (
+            <ul>
+                {renderListItems(this.props.items)}
+            </ul>
+        )
+    }
 }
+
+export default List

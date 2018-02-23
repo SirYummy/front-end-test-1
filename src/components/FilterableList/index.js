@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
 import List from '../List'
-import filterable from '../../decorators/filterable'
+import decorators from '../../decorators'
 
-export default filterable(List)
+export default decorators.filterable(List)
