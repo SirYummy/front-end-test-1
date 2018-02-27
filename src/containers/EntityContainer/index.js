@@ -11,13 +11,10 @@ function handleFilterInputChange (event) {
 }
 
 class EntityContainer extends Component {
-    constructor(props) {
-        super(props)
-        this.handleFilterInputChange = handleFilterInputChange.bind(this)
-        this.state = {
-            filterInputValue : ''
-        }
+    state = {
+        filterInputValue : ''
     }
+    
     render() {
         const { props, state } = this
         return (
@@ -25,8 +22,8 @@ class EntityContainer extends Component {
                 <FilterInput 
                     type='text' 
                     name='app-test-input-name' 
-                    value={state.filterInputValue} 
-                    onChange={this.handleFilterInputChange}
+                    value={state.filterInputValue}
+                    onChange={handleFilterInputChange.bind(this)}
                 />
                 <FilterableList 
                     filterBy={state.filterInputValue} 

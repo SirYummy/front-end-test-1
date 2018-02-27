@@ -1,4 +1,5 @@
 import { expect } from 'code'
+import sinon from 'sinon'
 import React, { Component } from 'react'
 import { shallow } from 'enzyme'
 import decorators from '../../../src/decorators'
@@ -35,6 +36,15 @@ describe('Given the `filterable` decorator', () => {
 
         it('changes the value of `props.isDecorated` to `true`', () => {
 
+        })
+
+        describe('when the component receives new props', () => {
+            it('should call applyFilter', () => {
+                const applyFilterSpy = sinon.spy(decoratedComponent, 'applyFilter')
+                const testProps = { foo : 'bar' }
+                decoratedComponent.componentWillReceiveProps(testProps)
+                expect(applyFilterSpy.called).to.be.true()
+            })
         })
     })
 })

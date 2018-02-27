@@ -5,9 +5,6 @@ const renderListItems = (items) => {
 }
 
 class List extends Component {
-    constructor(props) {
-        super(props)
-    }
 
     render() {
         return (

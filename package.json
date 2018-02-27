@@ -45,6 +45,7 @@
     "jest-nyan-reporter": "^1.0.2",
     "jsdom": "^11.5.1",
     "mocha": "^4.0.1",
+    "nyc": "^11.4.1",
     "react-addons-test-utils": "^15.3.2",
     "react-test-renderer": "^15.6.2",
     "sinon": "^4.1.3",
